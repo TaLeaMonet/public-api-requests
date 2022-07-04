@@ -81,7 +81,7 @@ modalInfoContainer.setAttribute("class", "modal-info-container");
 button.setAttribute("type", "button");
 button.setAttribute("id", "modal-close-button");
 button.setAttribute("class", "modal-close-button");
-strong.innerHTML = "X";
+strong.insertAdjacentHTML("beforeend", "X");
 button.insertAdjacentElement("beforeend", strong);
 modalImg.setAttribute("class", "modal-img");
 modalImg.setAttribute("src", "https://placehold.it/125x125");
@@ -103,7 +103,7 @@ birthdayPar.textContent = `2/22/2012`;
 body.appendChild(modalContainer);
 modalContainer.appendChild(modal);
 modal.append(button, modalInfoContainer);
-modalInfoContainer.append(modalImg, h3, emailPar, cityPar, hrTag, phonePar, addressPar, birthdayPar);
+modalInfoContainer.append(modalImg, h3, emailPar, cityPar, hrTag, phonePar, addressPar, birthdayPar); 
 
 
 
