@@ -3,12 +3,15 @@
 function fetchRandomUser(url) {
     return fetch(url) 
             .then(res => res.json())
-            .then(obj => users = obj)
-            .then(obj => console.log(users["results"][0]))
+            .then(data => console.log(data.results))
             .catch(error => console.log("Looks like there was a problem", error));
-    
 }
-fetchRandomUser("https://randomuser.me/api/");
+function displayUserInfo(data) {
+    for(let i = 0; i < 12; i++ ) {
+        console.log(fetchRandomUser("https://randomuser.me/api/"));
+    }
+}
+displayUserInfo();
 
 /**
  * Create search feature,
@@ -37,36 +40,47 @@ form.append(searchInput, searchSubmit);
 
 //2. Gallery Items
 //Generate gallery items
-function galleryItems(data, userImages, num) {
+function galleryItems(data) {
     const containerDiv = document.getElementById('gallery');
     const cardDiv = document.createElement('div');
     const cardInfoContainer = document.createElement('div');
+    const cardImgContainer = document.createElement('div');
+    const cardImg = document.createElement('img')
+    const nameH3 = document.createElement('h3');
+    const emailP = document.createElement('p');
+    const locationP = document.createElement('p');
+//Create classnames
     cardDiv.className = 'card';
     cardInfoContainer.className = 'card-info-container';
-    const cardImgContainer = document.createElement('div');
-    const cardImg = document.createElement('img');
     cardImgContainer.className = 'card-img';
+//Set Attributes
     cardImg.setAttribute("class", "card-img")
     cardImg.setAttribute("src", `${data}`);
     cardImg.setAttribute("alt", "profile picture");
     cardImgContainer.appendChild(cardImg);
-    const nameH3 = document.createElement('h3');
     nameH3.setAttribute("id", "name");
     nameH3.setAttribute("class", "card-name cap");
-    nameH3.textContent = `Name Placeholder`
-    const emailP = document.createElement('p');
-    emailP.setAttribute("class", "card-text");
+    nameH3.textContent = `${data}`
+        emailP.setAttribute("class", "card-text");
     emailP.textContent = `Email Placeholder`;
-    const locationP = document.createElement('p');
     locationP.setAttribute("class", "card-text cap");
     locationP.textContent = `City, State Placeholder`;
-    //Append elements to divs
+//Append elements to divs
     containerDiv.appendChild(cardDiv);
     cardDiv.append(cardImgContainer);
     cardDiv.insertAdjacentElement("beforeend", cardInfoContainer);
     cardInfoContainer.append(nameH3, emailP, locationP);
 }
 galleryItems();
+
+// function generateUsers(galleryItems) {
+//     for (let i = 0; i < 12; i++) {
+//         const galleryItem = galleryItems();
+//     }
+//     return galleryItem;
+// }
+// generateUsers();
+
 //Generate user images 
 
 
