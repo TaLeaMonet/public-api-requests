@@ -42,18 +42,19 @@ form.append(searchInput, searchSubmit);
 //Generate gallery items
 function galleryItems(data) {
     const containerDiv = document.getElementById('gallery');
+    for (let i = 0; i < 12; i ++) {
     const cardDiv = document.createElement('div');
     const cardInfoContainer = document.createElement('div');
     const cardImgContainer = document.createElement('div');
     const cardImg = document.createElement('img')
     const nameH3 = document.createElement('h3');
     const emailP = document.createElement('p');
-    const locationP = document.createElement('p');
-//Create classnames
+    const locationP = document.createElement('p');    
+    //Create classnames
     cardDiv.className = 'card';
     cardInfoContainer.className = 'card-info-container';
     cardImgContainer.className = 'card-img';
-//Set Attributes
+    //Set Attributes
     cardImg.setAttribute("class", "card-img")
     cardImg.setAttribute("src", `${data}`);
     cardImg.setAttribute("alt", "profile picture");
@@ -65,24 +66,14 @@ function galleryItems(data) {
     emailP.textContent = `Email Placeholder`;
     locationP.setAttribute("class", "card-text cap");
     locationP.textContent = `City, State Placeholder`;
-//Append elements to divs
+    //Append elements to divs
     containerDiv.appendChild(cardDiv);
     cardDiv.append(cardImgContainer);
     cardDiv.insertAdjacentElement("beforeend", cardInfoContainer);
-    cardInfoContainer.append(nameH3, emailP, locationP);
+    cardInfoContainer.append(nameH3, emailP, locationP);    
+    }
 }
 galleryItems();
-
-// function generateUsers(galleryItems) {
-//     for (let i = 0; i < 12; i++) {
-//         const galleryItem = galleryItems();
-//     }
-//     return galleryItem;
-// }
-// generateUsers();
-
-//Generate user images 
-
 
 // //3. Modal Windows
 // //Create elements for modal
