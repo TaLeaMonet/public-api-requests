@@ -40,10 +40,11 @@ searchContainer.append(form);
 form.append(searchInput, searchSubmit);
 
 
-function displayUserInfo(users) {
+function displayUserInfo(data) {
     const containerDiv = document.getElementById('gallery');
-    for(let i = 0;  i < users.length; i++)  {
-        const cardDiv = document.createElement('div');
+    //Iterate over employees and create gallery item for each
+    for(let i = 0;  i < data.length; i++)  {
+    const cardDiv = document.createElement('div');
     const cardInfoContainer = document.createElement('div');
     const cardImgContainer = document.createElement('div');
     const cardImg = document.createElement('img')
@@ -56,16 +57,16 @@ function displayUserInfo(users) {
     cardImgContainer.className = 'card-img';
     //Set Attributes
     cardImg.setAttribute("class", "card-img")
-    cardImg.setAttribute("src", `${users[i].picture.thumbnail}`);
+    cardImg.setAttribute("src", `${data[i].picture.thumbnail}`);
     cardImg.setAttribute("alt", "profile picture");
     cardImgContainer.appendChild(cardImg);
     nameH3.setAttribute("id", "name");
     nameH3.setAttribute("class", "card-name cap");
-    nameH3.textContent = `${users[i].name.first}`
+    nameH3.textContent = `${data[i].name.first} ${data[i].name.last}`
     emailP.setAttribute("class", "card-text");
-    emailP.textContent = `${users[i].email}`;
+    emailP.textContent = `${data[i].email}`;
     locationP.setAttribute("class", "card-text cap");
-    locationP.textContent = `${users[i].location.city}`;
+    locationP.textContent = `${data[i].location.city}`;
     //Append elements to divs
     containerDiv.appendChild(cardDiv);
     cardDiv.append(cardImgContainer);
