@@ -1,13 +1,15 @@
 //Get and display 12 random users
-//Create Fetch functions 
+//Create Fetch function
+
+let employeesArr;
 function fetchRandomUser(url) {
     return fetch(url) 
             .then(res => res.json())
             .then(data => {
-                let employeesArr;
                 employeesArr = data.results;  
                 console.log(employeesArr);
                 displayUserInfo(employeesArr);
+                //generateModal(employeesArr);
             })
             .catch(error => console.log("Looks like there was a problem", error));
 }
@@ -39,7 +41,7 @@ searchSubmit.setAttribute("class", "search-submit");
 searchContainer.append(form);
 form.append(searchInput, searchSubmit);
 
-
+//2. Gallery Items
 function displayUserInfo(data) {
     const containerDiv = document.getElementById('gallery');
     //Iterate over employees and create gallery item for each
@@ -75,58 +77,67 @@ function displayUserInfo(data) {
     }    
 }
 
-
-// //3. Modal Windows
+//3. Modal Windows
 // //Create elements for modal
-// const body = document.getElementsByTagName('body')[0];
-// const modalContainer = document.createElement('div');
-// const modal = document.createElement('div');
-// const modalInfoContainer = document.createElement('div');
-// const button = document.createElement('button');
-// const strong = document.createElement('strong');
-// const modalImg = document.createElement('img');
-// const h3 = document.createElement('h3');
-// const emailPar = document.createElement('p');
-// const cityPar = document.createElement('p');
-// const hrTag = document.createElement('hr');
-// const phonePar = document.createElement('p');
-// const addressPar = document.createElement('p');
-// const birthdayPar = document.createElement('p');
-// //Set attributes for each element
-// modalContainer.setAttribute("class", "modal-container");
-// modal.setAttribute("class", "modal");
-// modalInfoContainer.setAttribute("class", "modal-info-container");
-// button.setAttribute("type", "button");
-// button.setAttribute("id", "modal-close-button");
-// button.setAttribute("class", "modal-close-button");
-// strong.insertAdjacentHTML("beforeend", "X");
-// button.insertAdjacentElement("beforeend", strong);
-// modalImg.setAttribute("class", "modal-img");
-// modalImg.setAttribute("src", "https://placehold.it/125x125");
-// modalImg.setAttribute("alt", "profile picture");
-// h3.setAttribute("id", "name");
-// h3.setAttribute("class", "modal-name cap");
-// h3.textContent = `Jane Doe`
-// emailPar.setAttribute("class", "modal-text");
-// emailPar.textContent = `janedoe@dreamland.com`;
-// cityPar.setAttribute("class", "modal-text cap");
-// cityPar.textContent = `City Placeholder`;
-// phonePar.setAttribute("class", "modal-text");
-// phonePar.textContent = `(222)222-2222`
-// addressPar.setAttribute("class", "modal-text");
-// addressPar.textContent = `222 Portland Ave., Portland, OR 22222`;
-// birthdayPar.setAttribute("class", "modal-text");
-// birthdayPar.textContent = `2/22/2012`;
-// //Append elements to body element
-// body.appendChild(modalContainer);
-// modalContainer.appendChild(modal);
-// modal.append(button, modalInfoContainer);
-// modalInfoContainer.append(modalImg, h3, emailPar, cityPar, hrTag, phonePar, addressPar, birthdayPar); 
+function generateModal(data) {
+    //Iterate over employees and create modal for each 
+    for (let i = 0;  i < data.length; i++) {
+    const body = document.getElementsByTagName('body')[0];
+    const modalContainer = document.createElement('div');
+    const modal = document.createElement('div');
+    const modalInfoContainer = document.createElement('div');
+    const button = document.createElement('button');
+    const strong = document.createElement('strong');
+    const modalImg = document.createElement('img');
+    const h3 = document.createElement('h3');
+    const emailPar = document.createElement('p');
+    const cityPar = document.createElement('p');
+    const hrTag = document.createElement('hr');
+    const phonePar = document.createElement('p');
+    const addressPar = document.createElement('p');
+    const birthdayPar = document.createElement('p');
+    //Set attributes for each element
+    modalContainer.setAttribute("class", "modal-container");
+    modal.setAttribute("class", "modal");
+    modalInfoContainer.setAttribute("class", "modal-info-container");
+    button.setAttribute("type", "button");
+    button.setAttribute("id", "modal-close-button");
+    button.setAttribute("class", "modal-close-button");
+    strong.insertAdjacentHTML("beforeend", "X");
+    button.insertAdjacentElement("beforeend", strong);
+    modalImg.setAttribute("class", "modal-img");
+    modalImg.setAttribute("src", `${data[i].picture.thumbnail}`);
+    modalImg.setAttribute("alt", "profile picture");
+    h3.setAttribute("id", "name");
+    h3.setAttribute("class", "modal-name cap");
+    h3.textContent = `${data[i].name.first} ${data[i].name.last}`
+    emailPar.setAttribute("class", "modal-text");
+    emailPar.textContent = `${data[i].email}`;
+    cityPar.setAttribute("class", "modal-text cap");
+    cityPar.textContent = `${data[i].location.city}`;
+    phonePar.setAttribute("class", "modal-text");
+    phonePar.textContent = `${data[i].cell}`;
+    addressPar.setAttribute("class", "modal-text");
+    addressPar.textContent = `${data[i].location.street.number} ${data[i].location.street.name}, ${data[i].location.country} ${data[i].location.postcode}`;
+    birthdayPar.setAttribute("class", "modal-text");
+    birthdayPar.textContent = `${data[i].dob.date}`;
+    //Append elements to body element
+    body.appendChild(modalContainer);
+    modalContainer.appendChild(modal);
+    modal.append(button, modalInfoContainer);
+    modalInfoContainer.append(modalImg, h3, emailPar, cityPar, hrTag, phonePar, addressPar, birthdayPar); 
+    }
+}
 
-
-
-
-
+//Create Event listener for employee items
+const galleryItems = document.getElementById('gallery');
+galleryItems.addEventListener("click", (e) => {
+    if(e.target.className === 'card'|| e.target.className === 'card-info-container'
+    || e.target.className === 'card-img' || e.target.className === 'card-text' 
+    || e.target.className === 'card-text cap' || e.target.className === 'card-name cap') {
+    generateModal(employeesArr); 
+    }
+})
 
 
 
