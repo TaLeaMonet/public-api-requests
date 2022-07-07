@@ -3,21 +3,22 @@
 function fetchRandomUser(url) {
     return fetch(url) 
             .then(res => res.json())
-            .then(data => console.log(data.results))
+            .then(data => {
+                let employeesArr;
+                employeesArr = data.results;  
+                console.log(employeesArr);
+                displayUserInfo(employeesArr);
+            })
             .catch(error => console.log("Looks like there was a problem", error));
 }
-function displayUserInfo(data) {
-    for(let i = 0; i < 12; i++ ) {
-        console.log(fetchRandomUser("https://randomuser.me/api/"));
-    }
-}
-displayUserInfo();
+fetchRandomUser("https://randomuser.me/api/?results=12");
 
 /**
  * Create search feature,
  * gallery items
  * and modal to function as main components of app 
  */
+
 //1. Search form
 //Create elements and append them to the searchContainer div
 const searchContainer = document.getElementsByClassName('search-container')[0];
@@ -38,12 +39,11 @@ searchSubmit.setAttribute("class", "search-submit");
 searchContainer.append(form);
 form.append(searchInput, searchSubmit);
 
-//2. Gallery Items
-//Generate gallery items
-function galleryItems(data) {
+
+function displayUserInfo(users) {
     const containerDiv = document.getElementById('gallery');
-    for (let i = 0; i < 12; i ++) {
-    const cardDiv = document.createElement('div');
+    for(let i = 0;  i < users.length; i++)  {
+        const cardDiv = document.createElement('div');
     const cardInfoContainer = document.createElement('div');
     const cardImgContainer = document.createElement('div');
     const cardImg = document.createElement('img')
@@ -56,24 +56,24 @@ function galleryItems(data) {
     cardImgContainer.className = 'card-img';
     //Set Attributes
     cardImg.setAttribute("class", "card-img")
-    cardImg.setAttribute("src", `${data}`);
+    cardImg.setAttribute("src", `${users[i].picture.thumbnail}`);
     cardImg.setAttribute("alt", "profile picture");
     cardImgContainer.appendChild(cardImg);
     nameH3.setAttribute("id", "name");
     nameH3.setAttribute("class", "card-name cap");
-    nameH3.textContent = `${data}`
-        emailP.setAttribute("class", "card-text");
-    emailP.textContent = `Email Placeholder`;
+    nameH3.textContent = `${users[i].name.first}`
+    emailP.setAttribute("class", "card-text");
+    emailP.textContent = `${users[i].email}`;
     locationP.setAttribute("class", "card-text cap");
-    locationP.textContent = `City, State Placeholder`;
+    locationP.textContent = `${users[i].location.city}`;
     //Append elements to divs
     containerDiv.appendChild(cardDiv);
     cardDiv.append(cardImgContainer);
     cardDiv.insertAdjacentElement("beforeend", cardInfoContainer);
-    cardInfoContainer.append(nameH3, emailP, locationP);    
-    }
+    cardInfoContainer.append(nameH3, emailP, locationP);     
+    }    
 }
-galleryItems();
+
 
 // //3. Modal Windows
 // //Create elements for modal
