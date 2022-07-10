@@ -1,19 +1,20 @@
 //Get and display 12 random users
 //Create Fetch function
+const body = document.querySelector('body');
+let employeesArr = [];
+const url = "https://randomuser.me/api/?results=12&nat=us"
+// function fetchRandomUser(url) {
+     fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            employeesArr = data.results;
 
-let employeesArr;
-function fetchRandomUser(url) {
-    return fetch(url) 
-            .then(res => res.json())
-            .then(data => {
-                employeesArr = data.results;  
-                console.log(employeesArr);
-                displayUserInfo(employeesArr);
-                //generateModal(employeesArr);
-            })
-            .catch(error => console.log("Looks like there was a problem", error));
-}
-fetchRandomUser("https://randomuser.me/api/?results=12");
+            displayUserInfo(employeesArr);
+
+        })
+        //.catch(error => console.log("Looks like there was a problem", error));
+//}
+//fetchRandomUser("https://randomuser.me/api/?results=12&nat=us");
 
 /**
  * Create search feature,
@@ -21,123 +22,61 @@ fetchRandomUser("https://randomuser.me/api/?results=12");
  * and modal to function as main components of app 
  */
 
-//1. Search form
-//Create elements and append them to the searchContainer div
-const searchContainer = document.getElementsByClassName('search-container')[0];
-const form = document.createElement('form');
-const searchInput = document.createElement('input');
-const searchSubmit = document.createElement('input');
-//Create action and method attributes for form
-form.setAttribute("action", "#", "method", "get");
-//Create attributes for input methods
-searchInput.setAttribute("type", "search");
-searchInput.setAttribute("class", "search-input");
-searchInput.setAttribute("placeholder", "Search...");
-searchSubmit.setAttribute("type", "submit");
-searchSubmit.setAttribute("value", "&#x1F50D;");
-searchSubmit.setAttribute("id", "search-submit");
-searchSubmit.setAttribute("class", "search-submit");
-//Append input elements for form and form to search div
-searchContainer.append(form);
-form.append(searchInput, searchSubmit);
 
 //2. Gallery Items
-function displayUserInfo(data) {
-    const containerDiv = document.getElementById('gallery');
-    //Iterate over employees and create gallery item for each
-    for(let i = 0;  i < data.length; i++)  {
-    const cardDiv = document.createElement('div');
-    const cardInfoContainer = document.createElement('div');
-    const cardImgContainer = document.createElement('div');
-    const cardImg = document.createElement('img')
-    const nameH3 = document.createElement('h3');
-    const emailP = document.createElement('p');
-    const locationP = document.createElement('p');    
-    //Create classnames
-    cardDiv.className = 'card';
-    cardInfoContainer.className = 'card-info-container';
-    cardImgContainer.className = 'card-img';
-    //Set Attributes
-    cardImg.setAttribute("class", "card-img")
-    cardImg.setAttribute("src", `${data[i].picture.thumbnail}`);
-    cardImg.setAttribute("alt", "profile picture");
-    cardImgContainer.appendChild(cardImg);
-    nameH3.setAttribute("id", "name");
-    nameH3.setAttribute("class", "card-name cap");
-    nameH3.textContent = `${data[i].name.first} ${data[i].name.last}`
-    emailP.setAttribute("class", "card-text");
-    emailP.textContent = `${data[i].email}`;
-    locationP.setAttribute("class", "card-text cap");
-    locationP.textContent = `${data[i].location.city}`;
-    //Append elements to divs
-    containerDiv.appendChild(cardDiv);
-    cardDiv.append(cardImgContainer);
-    cardDiv.insertAdjacentElement("beforeend", cardInfoContainer);
-    cardInfoContainer.append(nameH3, emailP, locationP);     
-    }    
+const containerDiv = document.getElementById('gallery');
+const displayUserInfo = (data) => {
+ const users =  data.forEach((user, index) => {
+        console.log(user, index);
+        const html = `
+        <div class="card" data-index=${index}>
+        <div class="card-img-container">
+            <img class="card-img" src="${user.picture.large}" alt="profile picture">
+        </div>
+        <div class="card-info-container">
+            <h3 id="name" class="card-name cap">${user.name.first} ${user.name.last}</h3>
+            <p class="card-text">${user.email}</p>
+            <p class="card-text cap">${user.location.city}, ${user.location.state}</p>
+        </div>
+        </div>
+                `;
+        containerDiv.insertAdjacentHTML("beforeend", html);
+    })
+    openModal();
 }
-
 //3. Modal Windows
 // //Create elements for modal
-function generateModal(data) {
-    //Iterate over employees and create modal for each 
-    for (let i = 0;  i < data.length; i++) {
-    const body = document.getElementsByTagName('body')[0];
-    const modalContainer = document.createElement('div');
-    const modal = document.createElement('div');
-    const modalInfoContainer = document.createElement('div');
-    const button = document.createElement('button');
-    const strong = document.createElement('strong');
-    const modalImg = document.createElement('img');
-    const h3 = document.createElement('h3');
-    const emailPar = document.createElement('p');
-    const cityPar = document.createElement('p');
-    const hrTag = document.createElement('hr');
-    const phonePar = document.createElement('p');
-    const addressPar = document.createElement('p');
-    const birthdayPar = document.createElement('p');
-    //Set attributes for each element
-    modalContainer.setAttribute("class", "modal-container");
-    modal.setAttribute("class", "modal");
-    modalInfoContainer.setAttribute("class", "modal-info-container");
-    button.setAttribute("type", "button");
-    button.setAttribute("id", "modal-close-button");
-    button.setAttribute("class", "modal-close-button");
-    strong.insertAdjacentHTML("beforeend", "X");
-    button.insertAdjacentElement("beforeend", strong);
-    modalImg.setAttribute("class", "modal-img");
-    modalImg.setAttribute("src", `${data[i].picture.thumbnail}`);
-    modalImg.setAttribute("alt", "profile picture");
-    h3.setAttribute("id", "name");
-    h3.setAttribute("class", "modal-name cap");
-    h3.textContent = `${data[i].name.first} ${data[i].name.last}`
-    emailPar.setAttribute("class", "modal-text");
-    emailPar.textContent = `${data[i].email}`;
-    cityPar.setAttribute("class", "modal-text cap");
-    cityPar.textContent = `${data[i].location.city}`;
-    phonePar.setAttribute("class", "modal-text");
-    phonePar.textContent = `${data[i].cell}`;
-    addressPar.setAttribute("class", "modal-text");
-    addressPar.textContent = `${data[i].location.street.number} ${data[i].location.street.name}, ${data[i].location.country} ${data[i].location.postcode}`;
-    birthdayPar.setAttribute("class", "modal-text");
-    birthdayPar.textContent = `${data[i].dob.date}`;
-    //Append elements to body element
-    body.appendChild(modalContainer);
-    modalContainer.appendChild(modal);
-    modal.append(button, modalInfoContainer);
-    modalInfoContainer.append(modalImg, h3, emailPar, cityPar, hrTag, phonePar, addressPar, birthdayPar); 
-    }
+const generateModal = (data) => {
+    //Create modal for employees
+    const modalHtml = `
+    <div class="modal-container">
+    <div class="modal">
+        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+        <div class="modal-info-container">
+            <img class="modal-img" src="${data.picture.large}" alt="profile picture">
+            <h3 id="name" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
+            <p class="modal-text">${data.email}</p>
+            <p class="modal-text cap">${data.location.city}</p>
+            <hr>
+            <p class="modal-text">${data.cell}</p>
+            <p class="modal-text">${data.location.street.number} ${data.location.street.name}</p>
+            <p class="modal-text">${data.dob.date}</p>
+        </div>
+    </div>
+    `
+    body.insertAdjacentHTML("beforeend", modalHtml);
+}
+const openModal = () => {
+[...document.getElementsByClassName('card')].forEach(card =>{
+    card.addEventListener("click", (e) => {
+    const index = card.getAttribute("data-index");
+    console.log(index);
+    generateModal(employeesArr[index]);
+    })
+})
 }
 
-//Create Event listener for employee items
-const galleryItems = document.getElementById('gallery');
-galleryItems.addEventListener("click", (e) => {
-    if(e.target.className === 'card'|| e.target.className === 'card-info-container'
-    || e.target.className === 'card-img' || e.target.className === 'card-text' 
-    || e.target.className === 'card-text cap' || e.target.className === 'card-name cap') {
-    generateModal(employeesArr); 
-    }
-})
+
 
 
 
