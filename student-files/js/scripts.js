@@ -1,33 +1,23 @@
 //Get and display 12 random users
-//Create Fetch function
+//1. Fetch function
 const body = document.querySelector('body');
 let employeesArr = [];
-const url = "https://randomuser.me/api/?results=12&nat=us"
-// function fetchRandomUser(url) {
+const url = "https://randomuser.me/api/?results=12&nat=us";
      fetch(url)
         .then(res => res.json())
         .then(data => {
             employeesArr = data.results;
-
             displayUserInfo(employeesArr);
-
         })
-        //.catch(error => console.log("Looks like there was a problem", error));
-//}
-//fetchRandomUser("https://randomuser.me/api/?results=12&nat=us");
-
+        .catch(error => console.log("Looks like there was a problem", error));
 /**
- * Create search feature,
- * gallery items
+ * Create, gallery items
  * and modal to function as main components of app 
  */
-
-
 //2. Gallery Items
 const containerDiv = document.getElementById('gallery');
 const displayUserInfo = (data) => {
  const users =  data.forEach((user, index) => {
-        console.log(user, index);
         const html = `
         <div class="card" data-index=${index}>
         <div class="card-img-container">
@@ -39,15 +29,18 @@ const displayUserInfo = (data) => {
             <p class="card-text cap">${user.location.city}, ${user.location.state}</p>
         </div>
         </div>
-                `;
+          `;
         containerDiv.insertAdjacentHTML("beforeend", html);
     })
-    openModal();
+    //Call function to open modal
+    openModal(); 
 }
 //3. Modal Windows
-// //Create elements for modal
+//Function to create elements for modal
 const generateModal = (data) => {
-    //Create modal for employees
+//Create modal for employees
+//Birthday formatting
+    const birthDate = new Date(data.dob.date)
     const modalHtml = `
     <div class="modal-container">
     <div class="modal">
@@ -60,22 +53,31 @@ const generateModal = (data) => {
             <hr>
             <p class="modal-text">${data.cell}</p>
             <p class="modal-text">${data.location.street.number} ${data.location.street.name}</p>
-            <p class="modal-text">${data.dob.date}</p>
+            <p class="modal-text">${birthDate.toLocaleDateString('en-US')}</p>
         </div>
     </div>
     `
     body.insertAdjacentHTML("beforeend", modalHtml);
+    //Call function to close modal
+    closeModal();
 }
+//Function to open modal when a gallery item is clicked
 const openModal = () => {
 [...document.getElementsByClassName('card')].forEach(card =>{
     card.addEventListener("click", (e) => {
     const index = card.getAttribute("data-index");
-    console.log(index);
     generateModal(employeesArr[index]);
     })
 })
 }
-
+//Function to close modal when the button is clicked
+const closeModal = () => {
+  const button = document.getElementById('modal-close-btn');
+  const modalContainer = document.querySelector('.modal-container');
+  button.addEventListener("click", (e) => {
+      modalContainer.remove(); 
+  })  
+}
 
 
 
