@@ -40,7 +40,11 @@ const displayUserInfo = (data) => {
 const generateModal = (data) => {
 //Create modal for employees
 //Birthday formatting
-    const birthDate = new Date(data.dob.date)
+    const birthDate = new Date(data.dob.date).toLocaleDateString('en-US', {  
+        day:   '2-digit',
+        month: '2-digit',
+        year:  'numeric',
+    });
     const modalHtml = `
     <div class="modal-container">
     <div class="modal">
@@ -52,11 +56,12 @@ const generateModal = (data) => {
             <p class="modal-text cap">${data.location.city}</p>
             <hr>
             <p class="modal-text">${data.cell}</p>
-            <p class="modal-text">${data.location.street.number} ${data.location.street.name}</p>
-            <p class="modal-text">${birthDate.toLocaleDateString('en-US')}</p>
+            <p class="modal-text">${data.location.street.number} ${data.location.street.name}, ${data.location.city}, ${data.location.state}, ${data.location.postcode}</p>
+            <p class="modal-text">${birthDate}</p>
         </div>
     </div>
     `
+    console.log(data);
     body.insertAdjacentHTML("beforeend", modalHtml);
     //Call function to close modal
     closeModal();
